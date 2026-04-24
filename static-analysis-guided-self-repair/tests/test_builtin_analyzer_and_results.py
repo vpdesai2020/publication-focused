@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from sag_self_repair.builtin_analyzer import analyze_python_file
+from sag_self_repair.code_extract import extract_python_code
 from sag_self_repair.results import TrialRecord, summarize_trials
 from sag_self_repair.schema import AnalyzerRun, RepairIteration, TestRun, ToolFinding
 from sag_self_repair.stats import sign_test_two_sided, wilson_interval
@@ -64,3 +65,8 @@ def test_statistical_helpers_are_bounded():
     assert 0 <= lower <= upper <= 1
     assert sign_test_two_sided(10, 0) < 0.01
     assert sign_test_two_sided(0, 0) == 1.0
+
+
+def test_extract_python_code_prefers_fenced_block():
+    output = "Here is code:\n```python\nprint('ok')\n```\n"
+    assert extract_python_code(output) == "print('ok')\n"

@@ -1,0 +1,40 @@
+name: Reproducibility Check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "**"
+  pull_request:
+    paths:
+      - "**"
+
+jobs:
+  python-task-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Unit tests
+        run: python -B -m pytest
+      - name: Fixture task-pack run
+        run: python -B scripts/run_task_pack.py --strategy both --output-dir outputs/ci-fixture-runs
+      - name: Aggregate fixture results
+        run: python -B scripts/aggregate_results.py --results-dir outputs/ci-fixture-runs --csv-output outputs/analysis/ci_fixture_summary.csv --json-output outputs/analysis/ci_fixture_summary.json
+      - name: Record environment
+        run: python -B scripts/record_environment.py --output outputs/analysis/environment.json
+      - name: Run external analyzers
+        run: python -B scripts/run_external_analyzers_on_tasks.py --output outputs/analysis/external_analyzers.json
+      - name: Export paper fixture tables
+        run: python -B scripts/export_paper_tables.py outputs/analysis/ci_fixture_summary.json --output paper/ci_fixture_tables.md
+      - name: Upload reproducibility artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: reproducibility-artifacts
+          path: |
+            outputs/analysis/**
+            paper/ci_fixture_tables.md

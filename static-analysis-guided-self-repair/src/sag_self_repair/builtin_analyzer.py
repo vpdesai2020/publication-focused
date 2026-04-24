@@ -32,16 +32,35 @@ class _PythonSecurityVisitor(ast.NodeVisitor):
         self.path = path
         self.findings: list[ToolFinding] = []
         self._function_validation_stack: list[bool] = []
+        self._url_validation_stack: list[bool] = []
+        self._function_args_stack: list[set[str]] = []
+        self._function_name_stack: list[str] = []
         self._sql_tainted_names_stack: list[set[str]] = []
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         self._function_validation_stack.append(_contains_path_validation(node))
+        self._url_validation_stack.append(_contains_url_validation(node))
+        self._function_args_stack.append({arg.arg for arg in node.args.args})
+        self._function_name_stack.append(node.name)
         self._sql_tainted_names_stack.append(set())
         self.generic_visit(node)
         self._sql_tainted_names_stack.pop()
+        self._function_name_stack.pop()
+        self._function_args_stack.pop()
+        self._url_validation_stack.pop()
         self._function_validation_stack.pop()
 
     def visit_Assign(self, node: ast.Assign) -> None:
+        if _assigns_hardcoded_secret(node):
+            self.findings.append(
+                self._finding(
+                    node,
+                    "python.hardcoded-secret",
+                    "Avoid hard-coded credentials or API keys.",
+                    "CWE-798",
+                    "high",
+                )
+            )
         if self._sql_tainted_names_stack and _is_sql_string_builder(node.value):
             for target in node.targets:
                 if isinstance(target, ast.Name):
@@ -110,6 +129,31 @@ class _PythonSecurityVisitor(ast.NodeVisitor):
                     "high",
                 )
             )
+        if (
+            call_name in {"requests.get", "requests.post"}
+            and _call_has_tainted_argument(node)
+            and not _current_function_has_validation(self._url_validation_stack)
+        ):
+            self.findings.append(
+                self._finding(
+                    node,
+                    "python.requests.unvalidated-url",
+                    "Validate outbound URLs before making server-side requests.",
+                    "CWE-918",
+                    "high",
+                )
+            )
+        if call_name.endswith(".redirect") or call_name == "redirect":
+            if _call_has_tainted_argument(node):
+                self.findings.append(
+                    self._finding(
+                        node,
+                        "python.redirect.unvalidated-target",
+                        "Validate redirect targets before redirecting users.",
+                        "CWE-601",
+                        "medium",
+                    )
+                )
         if call_name.endswith(".execute") and _execute_uses_tainted_sql(node, self._sql_tainted_names_stack):
             self.findings.append(
                 self._finding(
@@ -130,14 +174,23 @@ class _PythonSecurityVisitor(ast.NodeVisitor):
                     "high",
                 )
             )
-        if call_name == "open" and not _current_function_has_validation(self._function_validation_stack):
+        self.generic_visit(node)
+
+    def visit_Return(self, node: ast.Return) -> None:
+        if (
+            isinstance(node.value, ast.Name)
+            and self._function_args_stack
+            and node.value.id in self._function_args_stack[-1]
+            and "url" in self._function_name_stack[-1].lower()
+            and not _current_function_has_validation(self._url_validation_stack)
+        ):
             self.findings.append(
                 self._finding(
                     node,
-                    "python.path.unvalidated-open",
-                    "Validate resolved paths before opening user-selected files.",
-                    "CWE-022",
-                    "high",
+                    "python.redirect.unvalidated-target",
+                    "Validate URL redirect targets before returning them to callers.",
+                    "CWE-601",
+                    "medium",
                 )
             )
         self.generic_visit(node)
@@ -190,6 +243,15 @@ def _contains_path_validation(node: ast.FunctionDef) -> bool:
     return False
 
 
+def _contains_url_validation(node: ast.FunctionDef) -> bool:
+    for child in ast.walk(node):
+        if isinstance(child, ast.Attribute) and child.attr in {"hostname", "netloc", "scheme"}:
+            return True
+        if isinstance(child, ast.Call) and _call_name(child.func) == "urlparse":
+            return True
+    return False
+
+
 def _is_sql_string_builder(node: ast.AST) -> bool:
     if isinstance(node, ast.JoinedStr):
         return _contains_sql_keyword(node)
@@ -217,4 +279,20 @@ def _execute_uses_tainted_sql(node: ast.Call, stack: list[set[str]]) -> bool:
         return True
     if isinstance(query_arg, ast.Name) and stack and query_arg.id in stack[-1]:
         return True
+    return False
+
+
+def _call_has_tainted_argument(node: ast.Call) -> bool:
+    return bool(node.args and isinstance(node.args[0], ast.Name))
+
+
+def _assigns_hardcoded_secret(node: ast.Assign) -> bool:
+    if not isinstance(node.value, ast.Constant) or not isinstance(node.value.value, str):
+        return False
+    if len(node.value.value) < 8:
+        return False
+    secret_words = ("key", "token", "secret", "password", "credential")
+    for target in node.targets:
+        if isinstance(target, ast.Name) and any(word in target.id.lower() for word in secret_words):
+            return True
     return False

@@ -65,6 +65,13 @@ Run the local fixture experiment:
 python scripts/run_fixture_experiment.py
 python scripts/run_task_pack.py --strategy both
 python scripts/aggregate_results.py --results-dir outputs
+python scripts/summarize_tasks.py
+```
+
+Run a command-backed model repair experiment:
+
+```powershell
+python scripts/run_command_model_experiment.py --task-dir tasks/python/py-cwe-078-command-injection --model mock --model-command python scripts/mock_repair_model.py
 ```
 
 Run tests:

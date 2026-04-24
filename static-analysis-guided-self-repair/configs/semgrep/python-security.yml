@@ -20,6 +20,28 @@ rules:
       category: security
     pattern: yaml.load(...)
 
+  - id: python.requests.unvalidated-url
+    languages: [python]
+    severity: ERROR
+    message: Validate outbound URLs before making server-side requests.
+    metadata:
+      cwe: "CWE-918"
+      category: security
+    pattern-either:
+      - pattern: requests.get($URL, ...)
+      - pattern: requests.post($URL, ...)
+
+  - id: python.redirect.unvalidated-target
+    languages: [python]
+    severity: WARNING
+    message: Validate redirect targets before redirecting users.
+    metadata:
+      cwe: "CWE-601"
+      category: security
+    pattern-either:
+      - pattern: redirect($URL, ...)
+      - pattern: flask.redirect($URL, ...)
+
   - id: python.flask.debug-enabled
     languages: [python]
     severity: WARNING
