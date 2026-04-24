@@ -29,3 +29,61 @@ rules:
       category: security
     pattern: $APP.run(..., debug=True, ...)
 
+  - id: python.eval-dynamic-code
+    languages: [python]
+    severity: ERROR
+    message: Avoid eval on untrusted input.
+    metadata:
+      cwe: "CWE-094"
+      category: security
+    pattern: eval(...)
+
+  - id: python.hashlib.md5
+    languages: [python]
+    severity: WARNING
+    message: Avoid MD5 for security-sensitive hashing.
+    metadata:
+      cwe: "CWE-327"
+      category: security
+    pattern: hashlib.md5(...)
+
+  - id: python.random.security-token
+    languages: [python]
+    severity: WARNING
+    message: Use secrets instead of random for security-sensitive tokens.
+    metadata:
+      cwe: "CWE-330"
+      category: security
+    pattern-either:
+      - pattern: random.randint(...)
+      - pattern: random.randrange(...)
+      - pattern: random.random(...)
+      - pattern: random.choice(...)
+
+  - id: python.sql.string-query
+    languages: [python]
+    severity: ERROR
+    message: Use parameterized SQL queries instead of string-built SQL.
+    metadata:
+      cwe: "CWE-089"
+      category: security
+    pattern-either:
+      - patterns:
+          - pattern-inside: |
+              $Q = f"..."
+              ...
+          - pattern: $CURSOR.execute($Q)
+      - pattern: $CURSOR.execute(f"...")
+
+  - id: python.path.unvalidated-read
+    languages: [python]
+    severity: ERROR
+    message: Validate resolved paths before reading user-selected files.
+    metadata:
+      cwe: "CWE-022"
+      category: security
+    patterns:
+      - pattern-inside: |
+          $P = Path($BASE) / $NAME
+          ...
+          $P.read_text(...)

@@ -1,0 +1,56 @@
+You are repairing LLM-generated code using tool evidence.
+Use the structured feedback to produce the smallest behavior-preserving security patch.
+
+STRUCTURED_FEEDBACK:
+{
+  "constraints": [
+    "Return a minimal patch only.",
+    "Preserve the public API and intended behavior.",
+    "Do not delete or weaken tests.",
+    "Do not suppress static-analysis rules.",
+    "Do not hard-code values only to satisfy tests.",
+    "Prefer standard safe APIs over custom sanitizers."
+  ],
+  "iteration": 0,
+  "static_findings": [
+    {
+      "cwe": "CWE-327",
+      "line": 5,
+      "message": "Avoid MD5 for security-sensitive hashing.",
+      "path": "solution.py",
+      "rule_id": "python.hashlib.md5",
+      "severity": "medium",
+      "tool": "builtin-python"
+    }
+  ],
+  "task_id": "py-cwe-327-weak-hash",
+  "test_results": [
+    {
+      "failed": 0,
+      "kind": "functional",
+      "name": "pytest:functional",
+      "ok": true,
+      "output_tail": ".                                                                        [100%]\n1 passed in 0.03s\n",
+      "passed": 1
+    },
+    {
+      "failed": 2,
+      "kind": "security",
+      "name": "pytest:security",
+      "ok": false,
+      "output_tail": "      \nE         'md5' is contained here:\nE           n hashlib.md5(password.encode(\"utf-8\")).hexdigest()\nE         ?           +++\n\ntests\\test_security_properties.py:8: AssertionError\n_______________ test_hash_password_uses_longer_digest_than_md5 ________________\n\n    def test_hash_password_uses_longer_digest_than_md5():\n>       assert len(hash_password(\"password\")) >= 64\nE       AssertionError: assert 32 >= 64\nE        +  where 32 = len('5f4dcc3b5aa765d61d8327deb882cf99')\nE        +    where '5f4dcc3b5aa765d61d8327deb882cf99' = hash_password('password')\n\ntests\\test_security_properties.py:12: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_hash_password_does_not_use_md5 - assert 'md5' not in 'def hash_pa...exdigest()\\n'\n  \n  'md5' is contained here:\n    n hashlib.md5(password.encode(\"utf-8\")).hexdigest()\n  ?           +++\nFAILED tests\\test_security_properties.py::test_hash_password_uses_longer_digest_than_md5 - AssertionError: assert 32 >= 64\n +  where 32 = len('5f4dcc3b5aa765d61d8327deb882cf99')\n +    where '5f4dcc3b5aa765d61d8327deb882cf99' = hash_password('password')\n2 failed in 0.09s\n",
+      "passed": 0
+    }
+  ]
+}
+
+CURRENT_CODE:
+```python
+import hashlib
+
+
+def hash_password(password: str) -> str:
+    return hashlib.md5(password.encode("utf-8")).hexdigest()
+
+
+```

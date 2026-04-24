@@ -94,10 +94,22 @@ class StaticAnalyzerRunner:
 
     def semgrep(self, target: Path, config: Path | str = "auto") -> AnalyzerRun:
         completed = run_command(
-            ["semgrep", "scan", "--json", "--config", str(config), str(target)],
+            [
+                "semgrep",
+                "scan",
+                "--json",
+                "--metrics=off",
+                "--disable-version-check",
+                "--config",
+                str(config),
+                str(target),
+            ],
             cwd=self.project_root,
         )
-        findings = parse_semgrep_json(completed.stdout) if completed.stdout.strip() else ()
+        if not completed.stdout.strip():
+            error = completed.stderr.strip() or "Semgrep returned no JSON output."
+            return AnalyzerRun("semgrep", completed.returncode, (), error=error)
+        findings = parse_semgrep_json(completed.stdout)
         return AnalyzerRun("semgrep", completed.returncode, findings, error=completed.stderr.strip() or None)
 
     def codeql_sarif_file(self, sarif_path: Path) -> AnalyzerRun:

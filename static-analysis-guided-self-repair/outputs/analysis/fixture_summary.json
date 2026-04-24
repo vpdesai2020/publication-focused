@@ -1,0 +1,282 @@
+{
+  "trials": 12,
+  "repair_success_rate": 0.5,
+  "mean_vulnerability_reduction": 0.5,
+  "functional_preservation_rate": 0.5,
+  "by_strategy": {
+    "identity": {
+      "trials": 6,
+      "repair_success_rate": 0.0,
+      "repair_success_ci95": [
+        0.0,
+        0.3903430336530645
+      ],
+      "mean_vulnerability_reduction": 0.0,
+      "functional_preservation_rate": 0.0
+    },
+    "fixture": {
+      "trials": 6,
+      "repair_success_rate": 1.0,
+      "repair_success_ci95": [
+        0.6096569663469354,
+        1.0
+      ],
+      "mean_vulnerability_reduction": 1.0,
+      "functional_preservation_rate": 1.0
+    }
+  },
+  "by_model": {
+    "fixture": {
+      "trials": 12,
+      "repair_success_rate": 0.5,
+      "repair_success_ci95": [
+        0.2537781703934222,
+        0.7462218296065778
+      ],
+      "mean_vulnerability_reduction": 0.5,
+      "functional_preservation_rate": 0.5
+    }
+  },
+  "rows": [
+    {
+      "task_id": "py-cwe-022-path-traversal",
+      "strategy": "identity",
+      "findings_before": 1,
+      "findings_after": 1,
+      "findings_removed": 0,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 0.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": false,
+      "repair_success": false,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082905Z-pc0pt-ide-00"
+    },
+    {
+      "task_id": "py-cwe-022-path-traversal",
+      "strategy": "fixture",
+      "findings_before": 1,
+      "findings_after": 0,
+      "findings_removed": 1,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 1.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": true,
+      "repair_success": true,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082913Z-pc0pt-fix-00"
+    },
+    {
+      "task_id": "py-cwe-078-command-injection",
+      "strategy": "identity",
+      "findings_before": 1,
+      "findings_after": 1,
+      "findings_removed": 0,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 0.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": false,
+      "repair_success": false,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082920Z-pc0ci-ide-00"
+    },
+    {
+      "task_id": "py-cwe-078-command-injection",
+      "strategy": "fixture",
+      "findings_before": 1,
+      "findings_after": 0,
+      "findings_removed": 1,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 1.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": true,
+      "repair_success": true,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082930Z-pc0ci-fix-00"
+    },
+    {
+      "task_id": "py-cwe-089-sql-injection",
+      "strategy": "identity",
+      "findings_before": 1,
+      "findings_after": 1,
+      "findings_removed": 0,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 0.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": false,
+      "repair_success": false,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082939Z-pc0si-ide-00"
+    },
+    {
+      "task_id": "py-cwe-089-sql-injection",
+      "strategy": "fixture",
+      "findings_before": 1,
+      "findings_after": 0,
+      "findings_removed": 1,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 1.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": true,
+      "repair_success": true,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082947Z-pc0si-fix-00"
+    },
+    {
+      "task_id": "py-cwe-094-eval-config",
+      "strategy": "identity",
+      "findings_before": 1,
+      "findings_after": 1,
+      "findings_removed": 0,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 0.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": false,
+      "repair_success": false,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T082953Z-pc0ec-ide-00"
+    },
+    {
+      "task_id": "py-cwe-094-eval-config",
+      "strategy": "fixture",
+      "findings_before": 1,
+      "findings_after": 0,
+      "findings_removed": 1,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 1.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": true,
+      "repair_success": true,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T083002Z-pc0ec-fix-00"
+    },
+    {
+      "task_id": "py-cwe-327-weak-hash",
+      "strategy": "identity",
+      "findings_before": 1,
+      "findings_after": 1,
+      "findings_removed": 0,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 0.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": false,
+      "repair_success": false,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T083010Z-pc3wh-ide-00"
+    },
+    {
+      "task_id": "py-cwe-327-weak-hash",
+      "strategy": "fixture",
+      "findings_before": 1,
+      "findings_after": 0,
+      "findings_removed": 1,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 1.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": true,
+      "repair_success": true,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T083017Z-pc3wh-fix-00"
+    },
+    {
+      "task_id": "py-cwe-330-insecure-token",
+      "strategy": "identity",
+      "findings_before": 1,
+      "findings_after": 1,
+      "findings_removed": 0,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 0.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": false,
+      "repair_success": false,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T083024Z-pc3it-ide-00"
+    },
+    {
+      "task_id": "py-cwe-330-insecure-token",
+      "strategy": "fixture",
+      "findings_before": 1,
+      "findings_after": 0,
+      "findings_removed": 1,
+      "findings_introduced": 0,
+      "vulnerability_reduction": 1.0,
+      "functional_tests_before_ok": true,
+      "all_tests_after_ok": true,
+      "repair_success": true,
+      "model": "fixture",
+      "seed": 0,
+      "repair_budget": 1,
+      "analyzers": [
+        "builtin-python"
+      ],
+      "manual_review_status": "not_reviewed",
+      "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\verified-runs\\20260424T083032Z-pc3it-fix-00"
+    }
+  ]
+}

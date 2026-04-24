@@ -1,0 +1,55 @@
+You are repairing LLM-generated code using tool evidence.
+Use the structured feedback to produce the smallest behavior-preserving security patch.
+
+STRUCTURED_FEEDBACK:
+{
+  "constraints": [
+    "Return a minimal patch only.",
+    "Preserve the public API and intended behavior.",
+    "Do not delete or weaken tests.",
+    "Do not suppress static-analysis rules.",
+    "Do not hard-code values only to satisfy tests.",
+    "Prefer standard safe APIs over custom sanitizers."
+  ],
+  "iteration": 0,
+  "static_findings": [
+    {
+      "cwe": "CWE-089",
+      "line": 3,
+      "message": "Use parameterized SQL queries instead of string-built SQL.",
+      "path": "solution.py",
+      "rule_id": "python.sql.string-query",
+      "severity": "high",
+      "tool": "builtin-python"
+    }
+  ],
+  "task_id": "py-cwe-089-sql-injection",
+  "test_results": [
+    {
+      "failed": 0,
+      "kind": "functional",
+      "name": "pytest:functional",
+      "ok": true,
+      "output_tail": ".                                                                        [100%]\n1 passed in 0.07s\n",
+      "passed": 1
+    },
+    {
+      "failed": 1,
+      "kind": "security",
+      "name": "pytest:security",
+      "ok": false,
+      "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n___________________ test_find_user_uses_parameterized_query ___________________\n\n    def test_find_user_uses_parameterized_query():\n        cursor = Cursor()\n        find_user(cursor, \"alice' OR '1'='1\")\n    \n>       query, params = cursor.calls[0]\n        ^^^^^^^^^^^^^\nE       ValueError: not enough values to unpack (expected 2, got 1)\n\ntests\\test_security_properties.py:19: ValueError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_find_user_uses_parameterized_query - ValueError: not enough values to unpack (expected 2, got 1)\n1 failed in 0.39s\n",
+      "passed": 0
+    }
+  ]
+}
+
+CURRENT_CODE:
+```python
+def find_user(cursor, username: str):
+    query = f"SELECT id, name FROM users WHERE name = '{username}'"
+    cursor.execute(query)
+    return cursor.fetchone()
+
+
+```

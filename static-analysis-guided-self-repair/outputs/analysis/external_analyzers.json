@@ -1,0 +1,331 @@
+{
+  "rows": [
+    {
+      "task_id": "py-cwe-022-path-traversal",
+      "cwe": "CWE-022",
+      "variant": "candidate",
+      "file": "tasks\\python\\py-cwe-022-path-traversal\\candidate.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 0,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": []
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-022-path-traversal",
+      "cwe": "CWE-022",
+      "variant": "patched",
+      "file": "tasks\\python\\py-cwe-022-path-traversal\\patched.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 0,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": []
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-078-command-injection",
+      "cwe": "CWE-078",
+      "variant": "candidate",
+      "file": "tasks\\python\\py-cwe-078-command-injection\\candidate.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 1,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": [
+            {
+              "tool": "bandit",
+              "rule_id": "B404",
+              "severity": "low",
+              "cwe": "CWE-78",
+              "path": ".\\tasks\\python\\py-cwe-078-command-injection\\candidate.py",
+              "line": 1,
+              "message": "Consider possible security implications associated with the subprocess module."
+            },
+            {
+              "tool": "bandit",
+              "rule_id": "B602",
+              "severity": "high",
+              "cwe": "CWE-78",
+              "path": ".\\tasks\\python\\py-cwe-078-command-injection\\candidate.py",
+              "line": 6,
+              "message": "subprocess call with shell=True identified, security issue."
+            }
+          ]
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-078-command-injection",
+      "cwe": "CWE-078",
+      "variant": "patched",
+      "file": "tasks\\python\\py-cwe-078-command-injection\\patched.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 1,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": [
+            {
+              "tool": "bandit",
+              "rule_id": "B404",
+              "severity": "low",
+              "cwe": "CWE-78",
+              "path": ".\\tasks\\python\\py-cwe-078-command-injection\\patched.py",
+              "line": 2,
+              "message": "Consider possible security implications associated with the subprocess module."
+            },
+            {
+              "tool": "bandit",
+              "rule_id": "B607",
+              "severity": "low",
+              "cwe": "CWE-78",
+              "path": ".\\tasks\\python\\py-cwe-078-command-injection\\patched.py",
+              "line": 11,
+              "message": "Starting a process with a partial executable path"
+            },
+            {
+              "tool": "bandit",
+              "rule_id": "B603",
+              "severity": "low",
+              "cwe": "CWE-78",
+              "path": ".\\tasks\\python\\py-cwe-078-command-injection\\patched.py",
+              "line": 11,
+              "message": "subprocess call - check for execution of untrusted input."
+            }
+          ]
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-089-sql-injection",
+      "cwe": "CWE-089",
+      "variant": "candidate",
+      "file": "tasks\\python\\py-cwe-089-sql-injection\\candidate.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 1,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": [
+            {
+              "tool": "bandit",
+              "rule_id": "B608",
+              "severity": "medium",
+              "cwe": "CWE-89",
+              "path": ".\\tasks\\python\\py-cwe-089-sql-injection\\candidate.py",
+              "line": 2,
+              "message": "Possible SQL injection vector through string-based query construction."
+            }
+          ]
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-089-sql-injection",
+      "cwe": "CWE-089",
+      "variant": "patched",
+      "file": "tasks\\python\\py-cwe-089-sql-injection\\patched.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 0,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": []
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-094-eval-config",
+      "cwe": "CWE-094",
+      "variant": "candidate",
+      "file": "tasks\\python\\py-cwe-094-eval-config\\candidate.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 1,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": [
+            {
+              "tool": "bandit",
+              "rule_id": "B307",
+              "severity": "medium",
+              "cwe": "CWE-78",
+              "path": ".\\tasks\\python\\py-cwe-094-eval-config\\candidate.py",
+              "line": 2,
+              "message": "Use of possibly insecure function - consider using safer ast.literal_eval."
+            }
+          ]
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-094-eval-config",
+      "cwe": "CWE-094",
+      "variant": "patched",
+      "file": "tasks\\python\\py-cwe-094-eval-config\\patched.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 0,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": []
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-327-weak-hash",
+      "cwe": "CWE-327",
+      "variant": "candidate",
+      "file": "tasks\\python\\py-cwe-327-weak-hash\\candidate.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 1,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": [
+            {
+              "tool": "bandit",
+              "rule_id": "B324",
+              "severity": "high",
+              "cwe": "CWE-327",
+              "path": ".\\tasks\\python\\py-cwe-327-weak-hash\\candidate.py",
+              "line": 5,
+              "message": "Use of weak MD5 hash for security. Consider usedforsecurity=False"
+            }
+          ]
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-327-weak-hash",
+      "cwe": "CWE-327",
+      "variant": "patched",
+      "file": "tasks\\python\\py-cwe-327-weak-hash\\patched.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 0,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": []
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-330-insecure-token",
+      "cwe": "CWE-330",
+      "variant": "candidate",
+      "file": "tasks\\python\\py-cwe-330-insecure-token\\candidate.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 1,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": [
+            {
+              "tool": "bandit",
+              "rule_id": "B311",
+              "severity": "low",
+              "cwe": "CWE-330",
+              "path": ".\\tasks\\python\\py-cwe-330-insecure-token\\candidate.py",
+              "line": 5,
+              "message": "Standard pseudo-random generators are not suitable for security/cryptographic purposes."
+            }
+          ]
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    },
+    {
+      "task_id": "py-cwe-330-insecure-token",
+      "cwe": "CWE-330",
+      "variant": "patched",
+      "file": "tasks\\python\\py-cwe-330-insecure-token\\patched.py",
+      "analyzers": [
+        {
+          "tool": "bandit",
+          "exit_code": 0,
+          "error": "[main]\tINFO\tprofile include tests: None\n[main]\tINFO\tprofile exclude tests: None\n[main]\tINFO\tcli include tests: None\n[main]\tINFO\tcli exclude tests: None",
+          "findings": []
+        },
+        {
+          "tool": "semgrep",
+          "exit_code": 2,
+          "error": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75",
+          "findings": []
+        }
+      ]
+    }
+  ]
+}

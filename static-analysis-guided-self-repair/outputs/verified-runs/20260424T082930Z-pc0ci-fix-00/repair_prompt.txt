@@ -1,0 +1,57 @@
+You are repairing LLM-generated code using tool evidence.
+Use the structured feedback to produce the smallest behavior-preserving security patch.
+
+STRUCTURED_FEEDBACK:
+{
+  "constraints": [
+    "Return a minimal patch only.",
+    "Preserve the public API and intended behavior.",
+    "Do not delete or weaken tests.",
+    "Do not suppress static-analysis rules.",
+    "Do not hard-code values only to satisfy tests.",
+    "Prefer standard safe APIs over custom sanitizers."
+  ],
+  "iteration": 0,
+  "static_findings": [
+    {
+      "cwe": "CWE-078",
+      "line": 6,
+      "message": "Avoid shell=True with subprocess calls.",
+      "path": "solution.py",
+      "rule_id": "python.subprocess.shell-true",
+      "severity": "high",
+      "tool": "builtin-python"
+    }
+  ],
+  "task_id": "py-cwe-078-command-injection",
+  "test_results": [
+    {
+      "failed": 0,
+      "kind": "functional",
+      "name": "pytest:functional",
+      "ok": true,
+      "output_tail": "..                                                                       [100%]\n2 passed in 0.08s\n",
+      "passed": 2
+    },
+    {
+      "failed": 40,
+      "kind": "security",
+      "name": "pytest:security",
+      "ok": false,
+      "output_tail": "edProcessError: Command 'echo backing up docs && whoami' returned non-zero exit status 256.\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[$(touch owned)] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[../secrets] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[C:\\\\Users\\\\Public] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_does_not_invoke_shell_for_valid_names - AssertionError: assert True is not True\n +  where True = <built-in method get of dict object at 0x00000248EF96E400>('shell')\n +    where <built-in method get of dict object at 0x00000248EF96E400> = {'shell': True, 'text': True}.get\nFAILED tests\\test_security_properties.py::test_run_backup_keeps_user_input_as_single_argument - AssertionError: assert 's' == 'project docs'\n  \n  - project docs\n  + s\n8 failed in 1.07s\n",
+      "passed": 0
+    }
+  ]
+}
+
+CURRENT_CODE:
+```python
+import subprocess
+
+
+def run_backup(name: str) -> str:
+    command = f"echo backing up {name}"
+    return subprocess.check_output(command, shell=True, text=True)
+
+
+```

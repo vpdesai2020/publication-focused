@@ -1,0 +1,62 @@
+{
+  "before": {
+    "task_id": "py-cwe-330-insecure-token",
+    "iteration": 0,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.random.security-token",
+        "severity": "medium",
+        "cwe": "CWE-330",
+        "path": "solution.py",
+        "line": 5,
+        "message": "Use secrets instead of random for security-sensitive tokens."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 1,
+        "failed": 0,
+        "ok": true,
+        "output_tail": ".                                                                        [100%]\n1 passed in 0.08s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 0,
+        "failed": 2,
+        "ok": false,
+        "output_tail": "FF                                                                       [100%]\n================================== FAILURES ===================================\n________________ test_make_reset_token_uses_secrets_not_random ________________\n\n    def test_make_reset_token_uses_secrets_not_random():\n        source = inspect.getsource(make_reset_token)\n>       assert \"random.\" not in source\nE       assert 'random.' not in 'def make_re... 999999)}\"\\n'\nE         \nE         'random.' is contained here:\nE           _id}-{random.randint(100000, 999999)}\"\nE         ?       +++++++\n\ntests\\test_security_properties.py:8: AssertionError\n___________ test_make_reset_token_has_substantial_entropy_material ____________\n\n    def test_make_reset_token_has_substantial_entropy_material():\n        token = make_reset_token(\"alice\")\n        suffix = token.split(\"-\", 1)[1]\n>       assert len(suffix) >= 24\nE       AssertionError: assert 6 >= 24\nE        +  where 6 = len('211197')\n\ntests\\test_security_properties.py:15: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_make_reset_token_uses_secrets_not_random - assert 'random.' not in 'def make_re... 999999)}\"\\n'\n  \n  'random.' is contained here:\n    _id}-{random.randint(100000, 999999)}\"\n  ?       +++++++\nFAILED tests\\test_security_properties.py::test_make_reset_token_has_substantial_entropy_material - AssertionError: assert 6 >= 24\n +  where 6 = len('211197')\n2 failed in 0.40s\n"
+      }
+    ]
+  },
+  "after": {
+    "task_id": "py-cwe-330-insecure-token",
+    "iteration": 1,
+    "findings": [],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 1,
+        "failed": 0,
+        "ok": true,
+        "output_tail": ".                                                                        [100%]\n1 passed in 0.08s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.09s\n"
+      }
+    ]
+  }
+}

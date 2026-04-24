@@ -17,8 +17,8 @@ dependencies = []
 dev = [
   "pytest>=8",
   "hypothesis>=6",
-  "bandit>=1.7",
-  "semgrep>=1.80"
+  "bandit>=1.9,<2",
+  "semgrep>=1.79,<2"
 ]
 
 [tool.setuptools.packages.find]

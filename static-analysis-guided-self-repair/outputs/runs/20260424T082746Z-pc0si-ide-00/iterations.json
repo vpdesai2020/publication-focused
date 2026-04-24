@@ -1,0 +1,72 @@
+{
+  "before": {
+    "task_id": "py-cwe-089-sql-injection",
+    "iteration": 0,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.sql.string-query",
+        "severity": "high",
+        "cwe": "CWE-089",
+        "path": "solution.py",
+        "line": 3,
+        "message": "Use parameterized SQL queries instead of string-built SQL."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 1,
+        "failed": 0,
+        "ok": true,
+        "output_tail": ".                                                                        [100%]\n1 passed in 0.07s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 0,
+        "failed": 1,
+        "ok": false,
+        "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n___________________ test_find_user_uses_parameterized_query ___________________\n\n    def test_find_user_uses_parameterized_query():\n        cursor = Cursor()\n        find_user(cursor, \"alice' OR '1'='1\")\n    \n>       query, params = cursor.calls[0]\n        ^^^^^^^^^^^^^\nE       ValueError: not enough values to unpack (expected 2, got 1)\n\ntests\\test_security_properties.py:19: ValueError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_find_user_uses_parameterized_query - ValueError: not enough values to unpack (expected 2, got 1)\n1 failed in 0.39s\n"
+      }
+    ]
+  },
+  "after": {
+    "task_id": "py-cwe-089-sql-injection",
+    "iteration": 1,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.sql.string-query",
+        "severity": "high",
+        "cwe": "CWE-089",
+        "path": "solution.py",
+        "line": 3,
+        "message": "Use parameterized SQL queries instead of string-built SQL."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 1,
+        "failed": 0,
+        "ok": true,
+        "output_tail": ".                                                                        [100%]\n1 passed in 0.07s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 0,
+        "failed": 1,
+        "ok": false,
+        "output_tail": "F                                                                        [100%]\n================================== FAILURES ===================================\n___________________ test_find_user_uses_parameterized_query ___________________\n\n    def test_find_user_uses_parameterized_query():\n        cursor = Cursor()\n        find_user(cursor, \"alice' OR '1'='1\")\n    \n>       query, params = cursor.calls[0]\n        ^^^^^^^^^^^^^\nE       ValueError: not enough values to unpack (expected 2, got 1)\n\ntests\\test_security_properties.py:19: ValueError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_find_user_uses_parameterized_query - ValueError: not enough values to unpack (expected 2, got 1)\n1 failed in 0.29s\n"
+      }
+    ]
+  }
+}

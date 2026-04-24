@@ -1,0 +1,56 @@
+You are repairing LLM-generated code using tool evidence.
+Use the structured feedback to produce the smallest behavior-preserving security patch.
+
+STRUCTURED_FEEDBACK:
+{
+  "constraints": [
+    "Return a minimal patch only.",
+    "Preserve the public API and intended behavior.",
+    "Do not delete or weaken tests.",
+    "Do not suppress static-analysis rules.",
+    "Do not hard-code values only to satisfy tests.",
+    "Prefer standard safe APIs over custom sanitizers."
+  ],
+  "iteration": 0,
+  "static_findings": [
+    {
+      "cwe": "CWE-094",
+      "line": 2,
+      "message": "Avoid eval on untrusted input.",
+      "path": "solution.py",
+      "rule_id": "python.eval-dynamic-code",
+      "severity": "high",
+      "tool": "builtin-python"
+    }
+  ],
+  "task_id": "py-cwe-094-eval-config",
+  "test_results": [
+    {
+      "failed": 0,
+      "kind": "functional",
+      "name": "pytest:functional",
+      "ok": true,
+      "output_tail": "..                                                                       [100%]\n2 passed in 0.07s\n",
+      "passed": 2
+    },
+    {
+      "failed": 1,
+      "kind": "security",
+      "name": "pytest:security",
+      "ok": false,
+      "output_tail": "F.                                                                       [100%]\n================================== FAILURES ===================================\n_____________________ test_parse_config_does_not_use_eval _____________________\n\n    def test_parse_config_does_not_use_eval():\n        source = inspect.getsource(parse_config)\n>       assert \"eval(\" not in source\nE       assert 'eval(' not in 'def parse_c...turn value\\n'\nE         \nE         'eval(' is contained here:\nE             value = eval(text)\nE         ?           +++++\nE               if not isinstance(value, dict):\nE                   raise ValueError(\"Config must be a dictionary\")\nE               return value\n\ntests\\test_security_properties.py:10: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_parse_config_does_not_use_eval - assert 'eval(' not in 'def parse_c...turn value\\n'\n  \n  'eval(' is contained here:\n      value = eval(text)\n  ?           +++++\n        if not isinstance(value, dict):\n            raise ValueError(\"Config must be a dictionary\")\n        return value\n1 failed, 1 passed in 0.53s\n",
+      "passed": 1
+    }
+  ]
+}
+
+CURRENT_CODE:
+```python
+def parse_config(text: str) -> dict:
+    value = eval(text)
+    if not isinstance(value, dict):
+        raise ValueError("Config must be a dictionary")
+    return value
+
+
+```

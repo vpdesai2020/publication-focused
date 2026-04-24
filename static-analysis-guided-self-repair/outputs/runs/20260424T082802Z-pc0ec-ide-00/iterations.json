@@ -1,0 +1,72 @@
+{
+  "before": {
+    "task_id": "py-cwe-094-eval-config",
+    "iteration": 0,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.eval-dynamic-code",
+        "severity": "high",
+        "cwe": "CWE-094",
+        "path": "solution.py",
+        "line": 2,
+        "message": "Avoid eval on untrusted input."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.07s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 1,
+        "failed": 1,
+        "ok": false,
+        "output_tail": "F.                                                                       [100%]\n================================== FAILURES ===================================\n_____________________ test_parse_config_does_not_use_eval _____________________\n\n    def test_parse_config_does_not_use_eval():\n        source = inspect.getsource(parse_config)\n>       assert \"eval(\" not in source\nE       assert 'eval(' not in 'def parse_c...turn value\\n'\nE         \nE         'eval(' is contained here:\nE             value = eval(text)\nE         ?           +++++\nE               if not isinstance(value, dict):\nE                   raise ValueError(\"Config must be a dictionary\")\nE               return value\n\ntests\\test_security_properties.py:10: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_parse_config_does_not_use_eval - assert 'eval(' not in 'def parse_c...turn value\\n'\n  \n  'eval(' is contained here:\n      value = eval(text)\n  ?           +++++\n        if not isinstance(value, dict):\n            raise ValueError(\"Config must be a dictionary\")\n        return value\n1 failed, 1 passed in 0.53s\n"
+      }
+    ]
+  },
+  "after": {
+    "task_id": "py-cwe-094-eval-config",
+    "iteration": 1,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.eval-dynamic-code",
+        "severity": "high",
+        "cwe": "CWE-094",
+        "path": "solution.py",
+        "line": 2,
+        "message": "Avoid eval on untrusted input."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.07s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 1,
+        "failed": 1,
+        "ok": false,
+        "output_tail": "F.                                                                       [100%]\n================================== FAILURES ===================================\n_____________________ test_parse_config_does_not_use_eval _____________________\n\n    def test_parse_config_does_not_use_eval():\n        source = inspect.getsource(parse_config)\n>       assert \"eval(\" not in source\nE       assert 'eval(' not in 'def parse_c...turn value\\n'\nE         \nE         'eval(' is contained here:\nE             value = eval(text)\nE         ?           +++++\nE               if not isinstance(value, dict):\nE                   raise ValueError(\"Config must be a dictionary\")\nE               return value\n\ntests\\test_security_properties.py:10: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_parse_config_does_not_use_eval - assert 'eval(' not in 'def parse_c...turn value\\n'\n  \n  'eval(' is contained here:\n      value = eval(text)\n  ?           +++++\n        if not isinstance(value, dict):\n            raise ValueError(\"Config must be a dictionary\")\n        return value\n1 failed, 1 passed in 0.51s\n"
+      }
+    ]
+  }
+}

@@ -43,6 +43,7 @@ Reachability labels:
 ## Current Validity Limits
 
 - This run does not use Syft yet; it uses a direct Maven `pom.xml` parser.
+- Syft/CycloneDX support has since been added to the pipeline, but Syft was not installed in this local environment when this specific run was produced.
 - It does not resolve transitive dependencies, so the dataset is smaller than a full SBOM-based scanner dataset.
 - Reachability is namespace-level source-reference analysis, not function-level CodeQL reachability.
 - OSV records do not always include CVSS vectors or summaries, so several findings use the ranker's conservative default severity signal.
@@ -55,4 +56,3 @@ Replace one layer at a time:
 1. Add Syft-generated CycloneDX SBOMs and compare component counts against the Maven parser.
 2. Add CodeQL call graph export for one repository and compare function-level reachability against namespace reachability.
 3. Add manual labels for the top 25 findings using `data/pilot-2026-04-24/manual-labels-template.csv`.
-

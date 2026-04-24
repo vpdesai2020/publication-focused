@@ -1,0 +1,62 @@
+{
+  "before": {
+    "task_id": "py-cwe-078-command-injection",
+    "iteration": 0,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.subprocess.shell-true",
+        "severity": "high",
+        "cwe": "CWE-078",
+        "path": "solution.py",
+        "line": 6,
+        "message": "Avoid shell=True with subprocess calls."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.08s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 0,
+        "failed": 40,
+        "ok": false,
+        "output_tail": "run_backup_keeps_user_input_as_single_argument():\n        with patch(\"solution.subprocess.check_output\", return_value=\"ok\") as check_output:\n            run_backup(\"project docs\")\n    \n        command = check_output.call_args.args[0]\n>       assert command[-1] == \"project docs\"\nE       AssertionError: assert 's' == 'project docs'\nE         \nE         - project docs\nE         + s\n\ntests\\test_security_properties.py:39: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[docs; rm -rf important] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[docs && whoami] - subprocess.CalledProcessError: Command 'echo backing up docs && whoami' returned non-zero exit status 256.\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[$(touch owned)] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[../secrets] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[C:\\\\Users\\\\Public] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_rejects_command_injection_shapes[] - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_run_backup_does_not_invoke_shell_for_valid_names - AssertionError: assert True is not True\n +  where True = <built-in method get of dict object at 0x000001F6F80F9740>('shell')\n +    where <built-in method get of dict object at 0x000001F6F80F9740> = {'shell': True, 'text': True}.get\nFAILED tests\\test_security_properties.py::test_run_backup_keeps_user_input_as_single_argument - AssertionError: assert 's' == 'project docs'\n  \n  - project docs\n  + s\n8 failed in 0.97s\n"
+      }
+    ]
+  },
+  "after": {
+    "task_id": "py-cwe-078-command-injection",
+    "iteration": 1,
+    "findings": [],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.08s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 0,
+        "passed": 8,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "........                                                                 [100%]\n8 passed in 0.11s\n"
+      }
+    ]
+  }
+}

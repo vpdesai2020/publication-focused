@@ -14,6 +14,7 @@ from .models import Reachability, VexStatus, VulnerabilityFinding
 from .osv_client import OsvPackageQuery, query_batch_chunked
 from .ranker import rank_findings
 from .reachability import classify_dependency_reachability
+from .syft import SyftUnavailable, generate_syft_cyclonedx_maven_components
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,6 +30,8 @@ def run_pilot(
     workdir: Path,
     output_dir: Path,
     limit: int | None = None,
+    sbom_backend: str = "auto",
+    syft_bin: str = "syft",
 ) -> dict[str, Any]:
     repositories = _load_repositories(config_path)
     if limit is not None:
@@ -46,10 +49,17 @@ def run_pilot(
     for repository in repositories:
         try:
             repo_dir = _materialize_repository(repository, repo_workdir)
-            components = collect_maven_dependencies(repo_dir)
+            repo_output = output_dir / "repositories" / repository.name
+            repo_output.mkdir(parents=True, exist_ok=True)
+            components, sbom_info = _collect_components(
+                repo_dir=repo_dir,
+                repo_output=repo_output,
+                sbom_backend=sbom_backend,
+                syft_bin=syft_bin,
+            )
             repo_findings = _find_vulnerabilities(repository, repo_dir, components)
             repo_ranked = rank_findings(repo_findings)
-            _write_repo_outputs(output_dir, repository, components, repo_findings, repo_ranked)
+            _write_repo_outputs(output_dir, repository, components, repo_findings, repo_ranked, sbom_info)
             all_findings.extend(repo_findings)
             repository_summaries.append(
                 {
@@ -57,6 +67,9 @@ def run_pilot(
                     "url": repository.url,
                     "ref": repository.ref,
                     "components": len(components),
+                    "sbom_backend": sbom_info["backend"],
+                    "sbom_path": sbom_info.get("sbom_path"),
+                    "sbom_fallback_reason": sbom_info.get("fallback_reason"),
                     "vulnerability_findings": len(repo_findings),
                     "reachable_findings": sum(
                         1 for finding in repo_findings if finding.reachability == Reachability.REACHABLE
@@ -73,6 +86,8 @@ def run_pilot(
         "config": str(config_path),
         "workdir": str(workdir),
         "output_dir": str(output_dir),
+        "requested_sbom_backend": sbom_backend,
+        "syft_bin": syft_bin,
         "repositories_requested": len(repositories),
         "repositories_completed": len(repository_summaries),
         "repositories_failed": len(failures),
@@ -112,6 +127,44 @@ def _materialize_repository(repository: PilotRepository, repo_workdir: Path) -> 
         _run(["git", "fetch", "--depth", "1", "origin", repository.ref], repo_dir)
         _run(["git", "checkout", "FETCH_HEAD"], repo_dir)
     return repo_dir
+
+
+def _collect_components(
+    repo_dir: Path,
+    repo_output: Path,
+    sbom_backend: str,
+    syft_bin: str,
+) -> tuple[list[MavenDependency], dict[str, Any]]:
+    if sbom_backend not in {"auto", "syft", "maven"}:
+        raise ValueError(f"Unsupported SBOM backend: {sbom_backend}")
+
+    if sbom_backend in {"auto", "syft"}:
+        sbom_path = repo_output / "sbom.cdx.json"
+        try:
+            result = generate_syft_cyclonedx_maven_components(repo_dir, sbom_path, syft_bin)
+            return result.components, {
+                "backend": "syft-cyclonedx",
+                "sbom_path": str(sbom_path),
+                "syft_version": result.version,
+                "syft_command": result.command,
+            }
+        except SyftUnavailable as exc:
+            if sbom_backend == "syft":
+                raise
+            fallback_reason = str(exc)
+        except RuntimeError as exc:
+            if sbom_backend == "syft":
+                raise
+            fallback_reason = str(exc)
+
+        components = collect_maven_dependencies(repo_dir)
+        return components, {
+            "backend": "maven-pom",
+            "fallback_reason": fallback_reason,
+        }
+
+    components = collect_maven_dependencies(repo_dir)
+    return components, {"backend": "maven-pom"}
 
 
 def _find_vulnerabilities(
@@ -188,9 +241,11 @@ def _write_repo_outputs(
     components: list[MavenDependency],
     findings: list[VulnerabilityFinding],
     ranked: list,
+    sbom_info: dict[str, Any],
 ) -> None:
     repo_output = output_dir / "repositories" / repository.name
     repo_output.mkdir(parents=True, exist_ok=True)
+    _write_json(repo_output / "sbom-info.json", sbom_info)
     _write_json(repo_output / "components.json", [component.to_dict() for component in components])
     _write_json(repo_output / "findings.json", [_finding_to_dict(finding) for finding in findings])
     _write_json(repo_output / "ranked.json", [item.to_dict() for item in ranked])
@@ -255,6 +310,7 @@ def _summary_markdown(summary: dict[str, Any], ranked: list) -> str:
         f"- Generated at: `{summary['generated_at']}`",
         f"- Repositories completed: `{summary['repositories_completed']}`",
         f"- Repositories failed: `{summary['repositories_failed']}`",
+        f"- Requested SBOM backend: `{summary['requested_sbom_backend']}`",
         f"- Components extracted: `{summary['component_count']}`",
         f"- Vulnerability findings: `{summary['finding_count']}`",
         f"- Reachable findings: `{summary['reachable_finding_count']}`",
@@ -262,12 +318,12 @@ def _summary_markdown(summary: dict[str, Any], ranked: list) -> str:
         "",
         "## Repositories",
         "",
-        "| Repository | Components | Findings | Reachable | Top Priority |",
-        "| --- | ---: | ---: | ---: | --- |",
+        "| Repository | SBOM Backend | Components | Findings | Reachable | Top Priority |",
+        "| --- | --- | ---: | ---: | ---: | --- |",
     ]
     for repo in summary["repositories"]:
         lines.append(
-            f"| {repo['name']} | {repo['components']} | {repo['vulnerability_findings']} | "
+            f"| {repo['name']} | {repo['sbom_backend']} | {repo['components']} | {repo['vulnerability_findings']} | "
             f"{repo['reachable_findings']} | {repo['top_priority'] or ''} |"
         )
     lines.extend(["", "## Top Findings", "", "| Rank | Repository | Vulnerability | Package | Score | Label | Reachability |", "| ---: | --- | --- | --- | ---: | --- | --- |"])

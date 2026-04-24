@@ -1,0 +1,72 @@
+{
+  "before": {
+    "task_id": "py-cwe-094-eval-config",
+    "iteration": 0,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.eval-dynamic-code",
+        "severity": "high",
+        "cwe": "CWE-094",
+        "path": "solution.py",
+        "line": 2,
+        "message": "Avoid eval on untrusted input."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.06s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 1,
+        "failed": 1,
+        "ok": false,
+        "output_tail": "F.                                                                       [100%]\n================================== FAILURES ===================================\n_____________________ test_parse_config_does_not_use_eval _____________________\n\n    def test_parse_config_does_not_use_eval():\n        source = inspect.getsource(parse_config)\n        tree = ast.parse(source)\n        calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)]\n>       assert all(not isinstance(call.func, ast.Name) or call.func.id != \"eval\" for call in calls)\nE       assert False\nE        +  where False = all(<generator object test_parse_config_does_not_use_eval.<locals>.<genexpr> at 0x00000225FF45FCA0>)\n\ntests\\test_security_properties.py:13: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_parse_config_does_not_use_eval - assert False\n +  where False = all(<generator object test_parse_config_does_not_use_eval.<locals>.<genexpr> at 0x00000225FF45FCA0>)\n1 failed, 1 passed in 0.74s\n"
+      }
+    ]
+  },
+  "after": {
+    "task_id": "py-cwe-094-eval-config",
+    "iteration": 1,
+    "findings": [
+      {
+        "tool": "builtin-python",
+        "rule_id": "python.eval-dynamic-code",
+        "severity": "high",
+        "cwe": "CWE-094",
+        "path": "solution.py",
+        "line": 2,
+        "message": "Avoid eval on untrusted input."
+      }
+    ],
+    "tests": [
+      {
+        "name": "pytest:functional",
+        "kind": "functional",
+        "exit_code": 0,
+        "passed": 2,
+        "failed": 0,
+        "ok": true,
+        "output_tail": "..                                                                       [100%]\n2 passed in 0.06s\n"
+      },
+      {
+        "name": "pytest:security",
+        "kind": "security",
+        "exit_code": 1,
+        "passed": 1,
+        "failed": 1,
+        "ok": false,
+        "output_tail": "F.                                                                       [100%]\n================================== FAILURES ===================================\n_____________________ test_parse_config_does_not_use_eval _____________________\n\n    def test_parse_config_does_not_use_eval():\n        source = inspect.getsource(parse_config)\n        tree = ast.parse(source)\n        calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)]\n>       assert all(not isinstance(call.func, ast.Name) or call.func.id != \"eval\" for call in calls)\nE       assert False\nE        +  where False = all(<generator object test_parse_config_does_not_use_eval.<locals>.<genexpr> at 0x000001353A70FCA0>)\n\ntests\\test_security_properties.py:13: AssertionError\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_parse_config_does_not_use_eval - assert False\n +  where False = all(<generator object test_parse_config_does_not_use_eval.<locals>.<genexpr> at 0x000001353A70FCA0>)\n1 failed, 1 passed in 0.50s\n"
+      }
+    ]
+  }
+}

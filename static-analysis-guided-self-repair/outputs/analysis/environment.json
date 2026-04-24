@@ -1,0 +1,23 @@
+{
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26100-SP0",
+  "processor": "Intel64 Family 6 Model 189 Stepping 1, GenuineIntel",
+  "tools": {
+    "bandit": {
+      "available": true,
+      "returncode": 0,
+      "stdout": "bandit 1.9.4\n  python version = 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "stderr": ""
+    },
+    "semgrep": {
+      "available": false,
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "Fatal error: exception Failure(\"Failed to create system store X509 authenticator: ca_certs_iter_on_anchors: CertOpenSystemStore returned NULL\")\nRaised at Stdlib.failwith in file \"stdlib.ml\", line 29, characters 17-33\nCalled from Opentelemetry_client_cohttp_eio.Httpc.authenticator in file \"src/client-cohttp-eio/opentelemetry_client_cohttp_eio.ml\", line 119, characters 6-75"
+    },
+    "codeql": {
+      "available": false,
+      "error": "[WinError 2] The system cannot find the file specified"
+    }
+  }
+}

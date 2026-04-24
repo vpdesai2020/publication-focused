@@ -23,12 +23,19 @@ def main() -> None:
     pilot_parser.add_argument("--workdir", type=Path, default=Path("artifacts/pilot"))
     pilot_parser.add_argument("--out", type=Path, default=Path("data/pilot-latest"))
     pilot_parser.add_argument("--limit", type=int, help="Optional maximum number of repositories to process.")
+    pilot_parser.add_argument(
+        "--sbom-backend",
+        choices=["auto", "syft", "maven"],
+        default="auto",
+        help="SBOM source: auto tries Syft CycloneDX first, syft requires Syft, maven uses the built-in parser.",
+    )
+    pilot_parser.add_argument("--syft-bin", default="syft", help="Path or command name for the Syft executable.")
 
     args = parser.parse_args()
     if args.command == "rank":
         _rank(args.findings, args.out)
     elif args.command == "pilot":
-        summary = run_pilot(args.config, args.workdir, args.out, args.limit)
+        summary = run_pilot(args.config, args.workdir, args.out, args.limit, args.sbom_backend, args.syft_bin)
         print(json.dumps(summary, indent=2))
 
 

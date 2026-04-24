@@ -72,6 +72,12 @@ $env:PYTHONPATH = (Resolve-Path .\src).Path
 python -B -m vulnprior.cli pilot --config data\pilot_repositories.json --workdir artifacts\pilot --out data\pilot-2026-04-24
 ```
 
+The pilot defaults to `--sbom-backend auto`, which generates Syft CycloneDX JSON SBOMs when `syft` is installed and records a Maven-parser fallback otherwise. To require Syft:
+
+```powershell
+python -B -m vulnprior.cli pilot --config data\pilot_repositories.json --workdir artifacts\pilot --out data\pilot-syft --sbom-backend syft
+```
+
 Example external-tool commands for later experiments:
 
 ```powershell
