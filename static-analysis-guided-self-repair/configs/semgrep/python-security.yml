@@ -1,0 +1,31 @@
+rules:
+  - id: python.subprocess.shell-true
+    languages: [python]
+    severity: ERROR
+    message: Avoid shell=True with untrusted input.
+    metadata:
+      cwe: "CWE-078"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern: subprocess.$FUNC(..., shell=True, ...)
+          - pattern: os.system(...)
+
+  - id: python.yaml.unsafe-load
+    languages: [python]
+    severity: ERROR
+    message: Use yaml.safe_load instead of yaml.load for untrusted YAML.
+    metadata:
+      cwe: "CWE-502"
+      category: security
+    pattern: yaml.load(...)
+
+  - id: python.flask.debug-enabled
+    languages: [python]
+    severity: WARNING
+    message: Do not run Flask with debug=True in generated code.
+    metadata:
+      cwe: "CWE-489"
+      category: security
+    pattern: $APP.run(..., debug=True, ...)
+

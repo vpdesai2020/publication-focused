@@ -1,0 +1,20 @@
+{
+  "repositories": [
+    {
+      "name": "webgoat",
+      "url": "https://github.com/WebGoat/WebGoat.git",
+      "notes": "Deliberately insecure Maven-based Java training application."
+    },
+    {
+      "name": "benchmarkjava",
+      "url": "https://github.com/OWASP-Benchmark/BenchmarkJava.git",
+      "notes": "OWASP Java benchmark application with Maven build metadata."
+    },
+    {
+      "name": "struts-examples",
+      "url": "https://github.com/apache/struts-examples.git",
+      "notes": "Apache Struts Maven multi-module examples."
+    }
+  ]
+}
+

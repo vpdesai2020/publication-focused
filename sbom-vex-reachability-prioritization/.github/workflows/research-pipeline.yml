@@ -1,0 +1,29 @@
+name: Research Pipeline Prototype
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "examples/**"
+      - "pyproject.toml"
+
+jobs:
+  rank-sample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install prototype
+        run: python -m pip install -e .
+      - name: Rank sample findings
+        run: |
+          mkdir -p artifacts
+          python -m vulnprior.cli rank examples/sample_findings.json --out artifacts/sample_ranked.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sample-ranked-findings
+          path: artifacts/sample_ranked.json
+

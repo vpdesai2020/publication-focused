@@ -1,0 +1,79 @@
+[
+  {
+    "vulnerability_id": "CVE-2021-44228",
+    "package": "pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1",
+    "ecosystem": "Maven",
+    "installed_version": "2.14.1",
+    "severity": "critical",
+    "cvss_score": 10.0,
+    "epss": 0.94,
+    "known_exploited": true,
+    "vex_status": "affected",
+    "vex_justification": null,
+    "reachability": "reachable",
+    "reachable_paths": [
+      "com.example.web.LoginController -> org.apache.logging.log4j.Logger"
+    ],
+    "priority_score": 1.0,
+    "priority_label": "critical",
+    "rationale": [
+      "severity_signal=1.00",
+      "exploit_signal=1.00",
+      "reachability=reachable:1.00",
+      "vex_status=affected:1.00",
+      "known_exploited=true",
+      "reachable_paths=1"
+    ],
+    "source": "sample",
+    "metadata": {}
+  },
+  {
+    "vulnerability_id": "GHSA-example-unknown",
+    "package": "pkg:maven/com.example/example-lib@1.0.0",
+    "ecosystem": "Maven",
+    "installed_version": "1.0.0",
+    "severity": "high",
+    "cvss_score": 8.1,
+    "epss": 0.03,
+    "known_exploited": false,
+    "vex_status": "under_investigation",
+    "vex_justification": null,
+    "reachability": "unknown",
+    "reachable_paths": [],
+    "priority_score": 0.5295,
+    "priority_label": "medium",
+    "rationale": [
+      "severity_signal=0.81",
+      "exploit_signal=0.03",
+      "reachability=unknown:0.45",
+      "vex_status=under_investigation:0.70"
+    ],
+    "source": "sample",
+    "metadata": {}
+  },
+  {
+    "vulnerability_id": "CVE-2022-22965",
+    "package": "pkg:maven/org.springframework/spring-webmvc@5.3.15",
+    "ecosystem": "Maven",
+    "installed_version": "5.3.15",
+    "severity": "critical",
+    "cvss_score": 9.8,
+    "epss": 0.28,
+    "known_exploited": false,
+    "vex_status": "not_affected",
+    "vex_justification": "vulnerable_code_not_in_execute_path",
+    "reachability": "unreachable",
+    "reachable_paths": [],
+    "priority_score": 0.25,
+    "priority_label": "low",
+    "rationale": [
+      "severity_signal=0.98",
+      "exploit_signal=0.28",
+      "reachability=unreachable:0.05",
+      "vex_status=not_affected:0.05",
+      "contextual_cap_applied=0.25"
+    ],
+    "source": "sample",
+    "metadata": {}
+  }
+]

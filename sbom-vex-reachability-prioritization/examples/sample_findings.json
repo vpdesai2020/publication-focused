@@ -1,0 +1,48 @@
+[
+  {
+    "vulnerability_id": "CVE-2021-44228",
+    "package": "pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1",
+    "ecosystem": "Maven",
+    "installed_version": "2.14.1",
+    "severity": "critical",
+    "cvss_score": 10.0,
+    "epss": 0.94,
+    "known_exploited": true,
+    "vex_status": "affected",
+    "reachability": "reachable",
+    "reachable_paths": [
+      "com.example.web.LoginController -> org.apache.logging.log4j.Logger"
+    ],
+    "source": "sample"
+  },
+  {
+    "vulnerability_id": "CVE-2022-22965",
+    "package": "pkg:maven/org.springframework/spring-webmvc@5.3.15",
+    "ecosystem": "Maven",
+    "installed_version": "5.3.15",
+    "severity": "critical",
+    "cvss_score": 9.8,
+    "epss": 0.28,
+    "known_exploited": false,
+    "vex_status": "not_affected",
+    "vex_justification": "vulnerable_code_not_in_execute_path",
+    "reachability": "unreachable",
+    "reachable_paths": [],
+    "source": "sample"
+  },
+  {
+    "vulnerability_id": "GHSA-example-unknown",
+    "package": "pkg:maven/com.example/example-lib@1.0.0",
+    "ecosystem": "Maven",
+    "installed_version": "1.0.0",
+    "severity": "high",
+    "cvss_score": 8.1,
+    "epss": 0.03,
+    "known_exploited": false,
+    "vex_status": "under_investigation",
+    "reachability": "unknown",
+    "reachable_paths": [],
+    "source": "sample"
+  }
+]
+

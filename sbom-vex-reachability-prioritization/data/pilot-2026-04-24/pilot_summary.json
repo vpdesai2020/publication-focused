@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-04-24T08:19:04.611047+00:00",
+  "config": "data\\pilot_repositories.json",
+  "workdir": "C:\\Users\\VASANT~1.DES\\AppData\\Local\\Temp\\vulnprior-pilot",
+  "output_dir": "data\\pilot-2026-04-24",
+  "repositories_requested": 3,
+  "repositories_completed": 3,
+  "repositories_failed": 0,
+  "component_count": 109,
+  "finding_count": 66,
+  "reachable_finding_count": 61,
+  "priority_counts": {
+    "critical": 0,
+    "high": 61,
+    "medium": 0,
+    "low": 5
+  },
+  "repositories": [
+    {
+      "name": "webgoat",
+      "url": "https://github.com/WebGoat/WebGoat.git",
+      "ref": null,
+      "components": 20,
+      "vulnerability_findings": 38,
+      "reachable_findings": 36,
+      "top_priority": "high"
+    },
+    {
+      "name": "benchmarkjava",
+      "url": "https://github.com/OWASP-Benchmark/BenchmarkJava.git",
+      "ref": null,
+      "components": 41,
+      "vulnerability_findings": 18,
+      "reachable_findings": 17,
+      "top_priority": "high"
+    },
+    {
+      "name": "struts-examples",
+      "url": "https://github.com/apache/struts-examples.git",
+      "ref": null,
+      "components": 48,
+      "vulnerability_findings": 10,
+      "reachable_findings": 8,
+      "top_priority": "high"
+    }
+  ],
+  "failures": []
+}

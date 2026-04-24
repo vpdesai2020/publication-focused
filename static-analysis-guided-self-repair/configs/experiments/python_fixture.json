@@ -1,0 +1,16 @@
+{
+  "name": "python-fixture-smoke",
+  "description": "Local reproducibility smoke suite using fixture repairs and the built-in analyzer.",
+  "tasks_root": "tasks/python",
+  "strategies": [
+    "identity",
+    "fixture"
+  ],
+  "model": "fixture",
+  "seeds": [
+    0
+  ],
+  "repair_budget": 1,
+  "note": "This validates pipeline behavior only. Do not report it as the paper's empirical result."
+}
+

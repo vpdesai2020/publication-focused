@@ -1,0 +1,13 @@
+{
+  "task_id": "py-cwe-078-command-injection",
+  "strategy": "fixture",
+  "findings_before": 1,
+  "findings_after": 0,
+  "findings_removed": 1,
+  "findings_introduced": 0,
+  "vulnerability_reduction": 1.0,
+  "functional_tests_before_ok": true,
+  "all_tests_after_ok": true,
+  "repair_success": true,
+  "run_dir": "C:\\Users\\vasant.desai\\OneDrive - Thermo Fisher Scientific\\Documents\\Learning\\research\\publication\\publication-focused\\static-analysis-guided-self-repair\\outputs\\runs\\20260424T081919Z-pc0ci-fix-00"
+}

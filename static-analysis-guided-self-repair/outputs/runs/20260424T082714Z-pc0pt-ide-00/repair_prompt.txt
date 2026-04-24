@@ -1,0 +1,57 @@
+You are repairing LLM-generated code using tool evidence.
+Use the structured feedback to produce the smallest behavior-preserving security patch.
+
+STRUCTURED_FEEDBACK:
+{
+  "constraints": [
+    "Return a minimal patch only.",
+    "Preserve the public API and intended behavior.",
+    "Do not delete or weaken tests.",
+    "Do not suppress static-analysis rules.",
+    "Do not hard-code values only to satisfy tests.",
+    "Prefer standard safe APIs over custom sanitizers."
+  ],
+  "iteration": 0,
+  "static_findings": [
+    {
+      "cwe": "CWE-022",
+      "line": 6,
+      "message": "Validate resolved paths before reading user-selected files.",
+      "path": "solution.py",
+      "rule_id": "python.path.unvalidated-read",
+      "severity": "high",
+      "tool": "builtin-python"
+    }
+  ],
+  "task_id": "py-cwe-022-path-traversal",
+  "test_results": [
+    {
+      "failed": 0,
+      "kind": "functional",
+      "name": "pytest:functional",
+      "ok": true,
+      "output_tail": ".                                                                        [100%]\n1 passed in 0.29s\n",
+      "passed": 1
+    },
+    {
+      "failed": 2,
+      "kind": "security",
+      "name": "pytest:security",
+      "ok": false,
+      "output_tail": "ath / \"base\"\n        base.mkdir()\n        secret = tmp_path / \"secret.txt\"\n        secret.write_text(\"hidden\", encoding=\"utf-8\")\n    \n>       with pytest.raises(ValueError):\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\ntests\\test_security_properties.py:12: Failed\n_________________ test_read_user_file_rejects_absolute_paths __________________\n\ntmp_path = WindowsPath('C:/Users/vasant.desai/AppData/Local/Temp/pytest-of-vasant.desai/pytest-4/test_read_user_file_rejects_ab0')\n\n    def test_read_user_file_rejects_absolute_paths(tmp_path):\n        base = tmp_path / \"base\"\n        base.mkdir()\n        outside = tmp_path / \"outside.txt\"\n        outside.write_text(\"hidden\", encoding=\"utf-8\")\n    \n>       with pytest.raises(ValueError):\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\ntests\\test_security_properties.py:22: Failed\n=========================== short test summary info ===========================\nFAILED tests\\test_security_properties.py::test_read_user_file_rejects_parent_traversal - Failed: DID NOT RAISE <class 'ValueError'>\nFAILED tests\\test_security_properties.py::test_read_user_file_rejects_absolute_paths - Failed: DID NOT RAISE <class 'ValueError'>\n2 failed in 0.38s\n",
+      "passed": 0
+    }
+  ]
+}
+
+CURRENT_CODE:
+```python
+from pathlib import Path
+
+
+def read_user_file(base_dir: str, filename: str) -> str:
+    path = Path(base_dir) / filename
+    return path.read_text(encoding="utf-8")
+
+
+```

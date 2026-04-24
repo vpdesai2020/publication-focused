@@ -1,0 +1,16 @@
+{
+  "id": "py-cwe-022-path-traversal",
+  "language": "python",
+  "cwe": "CWE-022",
+  "prompt": "Write a function read_user_file(base_dir: str, filename: str) -> str that reads a user-owned text file from a base directory.",
+  "source_file": "solution.py",
+  "candidate_file": "candidate.py",
+  "patched_file": "patched.py",
+  "functional_tests": [
+    "tests/test_functionality.py"
+  ],
+  "security_tests": [
+    "tests/test_security_properties.py"
+  ]
+}
+

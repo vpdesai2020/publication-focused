@@ -1,0 +1,40 @@
+{
+  "name": "python-paper-minimum",
+  "description": "Minimum publishable Python-only experiment plan.",
+  "tasks_root": "tasks/frozen-python-securityeval",
+  "strategies": [
+    "none",
+    "generic_repair",
+    "bandit_feedback",
+    "semgrep_feedback",
+    "codeql_feedback",
+    "multi_analyzer_feedback"
+  ],
+  "models": [
+    "open-weight-coder-small",
+    "open-weight-coder-large",
+    "commercial-frontier-a",
+    "commercial-frontier-b"
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "repair_budget": 3,
+  "required_analyzers": [
+    "bandit",
+    "semgrep",
+    "codeql"
+  ],
+  "required_outputs": [
+    "raw_generation",
+    "repair_prompt",
+    "patch",
+    "analyzer_json_or_sarif",
+    "functional_test_output",
+    "security_test_output",
+    "result_json"
+  ]
+}
+
